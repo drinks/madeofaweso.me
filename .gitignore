@@ -1,0 +1,8 @@
+*.pyc
+*.pyo
+*.o
+*.so
+da/localsettings.py
+media/uploads
+build
+db

@@ -1,0 +1,24 @@
+# graphicsmagick
+# boost
+#======================
+# lxml
+# beautifulsoup
+simplejson
+
+django
+docutils
+pil
+pgmagick
+celery
+redis
+django-redis-cache
+south
+fabric
+haystack
+django-tagging
+lettuce
+nose
+django-form-utils
+sorl-thumbnail==3.2.5
+markdown
+django-ckeditor
