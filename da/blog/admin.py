@@ -16,7 +16,7 @@ class PostAdmin(AdminImageMixin, admin.ModelAdmin):
     form = PostAdminForm
     prepopulated_fields = {"slug": ("title",),}
     list_display = ('__unicode__', 'created', 'tags', 'status',)
-    list_filter = ('status', 'tags', 'created', 'updated',)
+    list_filter = ('status', 'created', 'updated',)
     list_editable = ('tags', 'status',)
     search_fields = ('title', 'slug', 'excerpt', 'content', 'tags',)
     date_hierarchy = 'created'
