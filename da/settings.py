@@ -61,9 +61,6 @@ MEDIA_URL = 'http://localhost/django-media/da/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '&rpy2g)r64zu!!35*dukr+i!pyn2@470x0y0jm37_0=@+kju0k'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -137,3 +134,5 @@ CKEDITOR_CONFIGS = {
 }
 
 THUMBNAIL_FORMAT = 'PNG' #safer on mac
+
+from da.localsettings import *
