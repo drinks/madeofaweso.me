@@ -1,5 +1,6 @@
 from da import settings
 from django.db import models
+from sorl.thumbnail import ImageField
 from tagging.fields import TagField
 
 import datetime
@@ -16,9 +17,9 @@ class Post(models.Model):
     slug         = models.SlugField(max_length=100, unique=True)
     content      = models.TextField()
     excerpt      = models.TextField()
-    image        = models.ImageField(blank=True, null=True, upload_to='uploads')
-    image_width  = models.PositiveIntegerField(blank=True, null=True)
-    image_height = models.PositiveIntegerField(blank=True, null=True)
+    image        = ImageField(blank=True, null=True, upload_to='uploads')
+    # image_width  = models.PositiveIntegerField(blank=True, null=True)
+    # image_height = models.PositiveIntegerField(blank=True, null=True)
     tags         = TagField()
     status       = models.CharField(max_length=30, choices=STATUS_CHOICES, default='draft')
     created      = models.DateTimeField(auto_now_add=True)

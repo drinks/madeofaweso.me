@@ -2,6 +2,7 @@ import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = DEBUG
 
 ADMINS = (
     ('Dan Drinkard', 'dan.drinkard@gmail.com'),
@@ -113,16 +114,26 @@ INSTALLED_APPS = (
 CKEDITOR_MEDIA_PREFIX = "%sckeditor/" % MEDIA_URL
 CKEDITOR_UPLOAD_PATH = "%suploads/" % MEDIA_ROOT
 CKEDITOR_CONFIGS = {
-    'basic': {
-        'skin': 'kama',
-        'toolbar': 'Basic',
-        'height': 160,
-        'width': '75%',
-    },
     'default': {
         'skin': 'kama',
-        'toolbar': 'Full',
+        'toolbar': 'Custom',
         'height': 300,
-        'width': '75%',
+        'width': '85%',
+        'toolbar_Custom': [
+            ['Source','-','Preview',],
+            ['Cut','Copy','Paste','PasteText','PasteFromWord'],
+            ['SpellChecker','Scayt'],
+            ['Undo','Redo'],
+            ['Find','Replace'],
+            ['SelectAll','RemoveFormat'],
+            ['TextColor','BGColor'],
+            '/',
+            ['Format','-','Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+            ['Link','Unlink','Anchor','Image','Flash','Table','HorizontalRule'],
+        ]
     },
 }
+
+THUMBNAIL_FORMAT = 'PNG' #safer on mac

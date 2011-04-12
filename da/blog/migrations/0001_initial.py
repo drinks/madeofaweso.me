@@ -12,11 +12,12 @@ class Migration(SchemaMigration):
         db.create_table('blog_post', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('slug', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
-            ('content', self.gf('ckeditor.fields.RichTextField')()),
-            ('excerpt', self.gf('ckeditor.fields.RichTextField')()),
-            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
-            ('status', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=100, db_index=True)),
+            ('content', self.gf('django.db.models.fields.TextField')()),
+            ('excerpt', self.gf('django.db.models.fields.TextField')()),
+            ('image', self.gf('sorl.thumbnail.fields.ImageField')(max_length=100, null=True, blank=True)),
+            ('tags', self.gf('tagging.fields.TagField')()),
+            ('status', self.gf('django.db.models.fields.CharField')(default='draft', max_length=30)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
@@ -31,14 +32,15 @@ class Migration(SchemaMigration):
 
     models = {
         'blog.post': {
-            'Meta': {'object_name': 'Post'},
-            'content': ('ckeditor.fields.RichTextField', [], {}),
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Post'},
+            'content': ('django.db.models.fields.TextField', [], {}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'excerpt': ('ckeditor.fields.RichTextField', [], {}),
+            'excerpt': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'slug': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'image': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100', 'db_index': 'True'}),
+            'status': ('django.db.models.fields.CharField', [], {'default': "'draft'", 'max_length': '30'}),
+            'tags': ('tagging.fields.TagField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }

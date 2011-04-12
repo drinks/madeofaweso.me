@@ -1,14 +1,8 @@
-# graphicsmagick
-# boost
-#======================
-# lxml
-# beautifulsoup
+beautifulsoup
 simplejson
-
 django
 docutils
 pil
-pgmagick
 celery
 redis
 django-redis-cache
@@ -19,6 +13,6 @@ django-tagging
 lettuce
 nose
 django-form-utils
-sorl-thumbnail==3.2.5
+sorl-thumbnail
 markdown
 django-ckeditor

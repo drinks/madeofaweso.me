@@ -2,7 +2,8 @@
 *.pyo
 *.o
 *.so
-da/localsettings.py
-media/uploads
-build
-db
+/da/localsettings.py
+/media/uploads
+/build
+/db
+/media/cache
