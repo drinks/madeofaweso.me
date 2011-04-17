@@ -16,7 +16,7 @@ ENV_ROOT = os.path.dirname(os.path.dirname(PROJECT_ROOT))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(ENV_ROOT, 'db', 'da.sqlite3'),
+        'NAME': os.path.join(ENV_ROOT, 'db', 'moa.sqlite3'),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -47,15 +47,6 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/Users/dan/Sites/public/django-media/da/'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://localhost/django-media/da/'
-
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -77,7 +68,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
-ROOT_URLCONF = 'da.urls'
+ROOT_URLCONF = 'moa.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -106,12 +97,10 @@ INSTALLED_APPS = (
     'form_utils',
     'south',
     'tagging',
-    'da.blog',
-    'da.lifestream',
+    'moa.blog',
+    'moa.lifestream',
 )
 
-CKEDITOR_MEDIA_PREFIX = "%sckeditor/" % MEDIA_URL
-CKEDITOR_UPLOAD_PATH = "%suploads/" % MEDIA_ROOT
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'kama',
@@ -137,4 +126,4 @@ CKEDITOR_CONFIGS = {
 
 THUMBNAIL_FORMAT = 'PNG' #safer on mac
 
-from da.localsettings import *
+from moa.localsettings import *

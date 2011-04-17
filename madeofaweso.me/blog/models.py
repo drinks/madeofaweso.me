@@ -1,4 +1,3 @@
-from da import settings
 from django.db import models
 from sorl.thumbnail import ImageField
 from tagging.fields import TagField
@@ -18,15 +17,13 @@ class Post(models.Model):
     content      = models.TextField()
     excerpt      = models.TextField()
     image        = ImageField(blank=True, null=True, upload_to='uploads')
-    # image_width  = models.PositiveIntegerField(blank=True, null=True)
-    # image_height = models.PositiveIntegerField(blank=True, null=True)
     tags         = TagField()
     status       = models.CharField(max_length=30, choices=STATUS_CHOICES, default='draft')
     created      = models.DateTimeField(auto_now_add=True)
     updated      = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ('-created',)
-    
+
     def __unicode__(self):
         return self.title

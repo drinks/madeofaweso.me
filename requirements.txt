@@ -17,3 +17,4 @@ django-form-utils
 sorl-thumbnail
 markdown
 django-ckeditor
+django-chronograph

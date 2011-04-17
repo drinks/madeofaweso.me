@@ -1,6 +1,6 @@
 from BeautifulSoup import BeautifulSoup
 from dateutil import parser
-from da.lifestream.models import BehanceAuth, BehanceItem, BehanceAuthor, BehanceTag
+from moa.lifestream.models import SocialNetwork, BehanceAccount, BehanceField, BehanceImage, BehanceItem
 
 import urllib2
 import datetime
@@ -9,35 +9,35 @@ class BehanceImporter():
     def __init__(self):
         self.auths = BehanceAuth.objects.all()
 
-    def run(self):
+    def run(self, pages):
         messages = []
         for auth in self.auths:
             stream = self.get_stream(baseurl=auth.base_url.rstrip('/'), username=auth.username)
             new_ids = [item['resource_id'] for item in stream]
-            old_ids = [item.resource_id for 
+            old_ids = [item.resource_id for
                         item in list(BehanceItem.objects.filter(resource_id__in=new_ids))]
-            items = filter(lambda x: x['resource_id'] not in old_ids, stream)
-            for item in items:
-                # try:
-                authors = item['authors']
-                del item['authors']
-                btags = item['tags']
-                item['tags'] = ','.join([tag[0] for tag in btags])
-                # item['slug'] = item['title']
-                item = BehanceItem(**item)
-                item.save()
-                for author in authors:
-                    author, created = BehanceAuthor.objects.get_or_create(name=author[0], remote_url=author[1])
-                    item.authors.add(author.id)
-                for tag in btags:
-                    tag, created = BehanceTag.objects.get_or_create(tag=tag[0], remote_url=tag[1])
-                    item.behance_tags.add(tag.id)
-                messages.append('Imported item: %s' % item)
-                # except:
-                    # messages.append('Failed to import item %s' % item.get('title', ''))
-                    # continue
+            add_items = filter(lambda x: x['resource_id'] not in old_ids, stream)
+            update_items = filter(lambda x: x['resource_id'] not in new_ids, stream)
+            for item in add_items:
+                try:
+                    authors = item['authors']
+                    del item['authors']
+                    btags = item['tags']
+                    item['tags'] = ','.join([tag[0] for tag in btags])
+                    item = BehanceItem(**item)
+                    item.save()
+                    for author in authors:
+                        author, created = BehanceAuthor.objects.get_or_create(name=author[0], remote_url=author[1])
+                        item.authors.add(author.id)
+                    for tag in btags:
+                        tag, created = BehanceTag.objects.get_or_create(tag=tag[0], remote_url=tag[1])
+                        item.behance_tags.add(tag.id)
+                    messages.append('Imported item: %s' % item)
+                except:
+                    messages.append('Failed to import item %s' % item.get('title', ''))
+                    continue
         return messages
-        
+
     def get_stream(self, baseurl=None, username=None):
         items = []
         try:
@@ -62,7 +62,7 @@ class BehanceImporter():
                 except:
                     try:
                         multiple_authors = el.find('div', {'class':'multiple-owners'}).findAll('a')
-                        item['authors'] = [(single_author.getString(), baseurl + single_author.get('href')) for 
+                        item['authors'] = [(single_author.getString(), baseurl + single_author.get('href')) for
                                             single_author in multiple_authors]
                     except:
                         pass
@@ -71,3 +71,7 @@ class BehanceImporter():
                 items.append(item)
 
         return items
+
+    def get_item(self, url=None):
+        item = None
+        return item
