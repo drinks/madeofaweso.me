@@ -7,12 +7,20 @@ import datetime
 
 class BehanceImporter():
     def __init__(self):
-        self.auths = BehanceAuth.objects.all()
+        self.messages = []
+        self.accounts = BehanceAccount.objects.filter(active=True)
+        try:
+            self.network = SocialNetwork.objects.get(name__iexact='behance')
+        except SocialNetwork.DoesNotExist:
+            print 'You haven\'t created a network with the name "Behance."'
+            return None
+        if not self.accounts.count():
+            print 'You don\'t have any Behance accounts listed.'
+            return None
 
     def run(self, pages):
-        messages = []
-        for auth in self.auths:
-            stream = self.get_stream(baseurl=auth.base_url.rstrip('/'), username=auth.username)
+        for account in self.accounts:
+            stream = self.get_stream(baseurl=account.network.resource().rstrip('/'), username=account.username)
             new_ids = [item['resource_id'] for item in stream]
             old_ids = [item.resource_id for
                         item in list(BehanceItem.objects.filter(resource_id__in=new_ids))]
@@ -22,21 +30,25 @@ class BehanceImporter():
                 try:
                     authors = item['authors']
                     del item['authors']
-                    btags = item['tags']
-                    item['tags'] = ','.join([tag[0] for tag in btags])
+                    fields = item['fields']
+                    del item['fields']
                     item = BehanceItem(**item)
                     item.save()
                     for author in authors:
-                        author, created = BehanceAuthor.objects.get_or_create(name=author[0], remote_url=author[1])
-                        item.authors.add(author.id)
-                    for tag in btags:
-                        tag, created = BehanceTag.objects.get_or_create(tag=tag[0], remote_url=tag[1])
-                        item.behance_tags.add(tag.id)
-                    messages.append('Imported item: %s' % item)
+                        account, created = BehanceAccount.objects.get_or_create(username=author[1].split('/')[-1], 
+                                                                                network_id=self.network.id,)
+                        if created:
+                            account.name=author[0]
+                            account.save()
+                        item.authors.add(account.id)
+                    for field in fields:
+                        field, created = BehanceField.objects.get_or_create(field=field[0], remote_url=field[1])
+                        item.fields.add(field.id)
+                    self.messages.append('Imported item: %s' % item)
                 except:
-                    messages.append('Failed to import item %s' % item.get('title', ''))
+                    self.messages.append('Failed to import item %s' % item.title)
                     continue
-        return messages
+        return self.messages
 
     def get_stream(self, baseurl=None, username=None):
         items = []
@@ -66,7 +78,7 @@ class BehanceImporter():
                                             single_author in multiple_authors]
                     except:
                         pass
-                item['tags'] = [(tag.getString(), baseurl + tag.get('href')) for
+                item['fields'] = [(tag.getString(), baseurl + tag.get('href')) for
                             tag in el.find('div', {'class':'cover-field-wrap'}).findAll('a')]
                 items.append(item)
 

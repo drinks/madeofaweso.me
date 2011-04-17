@@ -8,7 +8,7 @@ class AbstractAccount(models.Model):
     A base class for social media accounts. These items include profile and
     auth information, and are iterated over by their importer.
     '''
-    username = models.CharField(max_length=50, null=True, blank=True)
+    username = models.CharField(max_length=50)
     network  = models.ForeignKey('SocialNetwork')
     active   = models.BooleanField(default=False, help_text='Should this account be scraped for updates?')
 
@@ -39,11 +39,14 @@ class AbstractItem(models.Model):
 
 class SocialNetwork(models.Model):
     name = models.CharField(max_length=50, help_text='The name of the network')
-    url = models.URLField(blank=True, null=True, help_text='The URL of the network, no trailing slash')
-    api_url = models.URLField(blank=True, null=True, verify_exists=False, help_text="The base URL of the API or scrape point, with a trailing slash")
+    url = models.URLField(help_text='The URL of the network, ex http://twitter.com/')
+    api_url = models.URLField(blank=True, null=True, verify_exists=False, help_text="The base URL of the API or scrape point, if different; ex: http://api.twitter.com/1/")
 
     def __unicode__(self):
         return self.name
+        
+    def resource(self):
+        return self.api_url or self.url
 
 class BehanceAccount(AbstractAccount):
     '''
@@ -81,8 +84,8 @@ class BehanceItem(AbstractItem):
     An atomic Behance project.
     '''
     thumbnail = ImageField(upload_to='uploads/behance')
-    authors   = models.ManyToManyField('BehanceAccount')
-    tags      = TagField(help_text='These are system-wide tags; tag pages are not linked to Behance')
+    authors   = models.ManyToManyField('BehanceAccount', null=True, blank=True)
+    tags      = TagField(blank=True, null=True, help_text='These are system-wide tags; tag pages are not linked to Behance')
     fields    = models.ManyToManyField('BehanceField', blank=True, null=True)
 
 

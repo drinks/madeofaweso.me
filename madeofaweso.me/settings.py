@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'form_utils',
     'south',
     'tagging',
+    'chronograph',
     'moa.blog',
     'moa.lifestream',
 )

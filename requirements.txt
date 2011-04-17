@@ -1,6 +1,6 @@
 beautifulsoup
 simplejson
-python-dateutil
+python-dateutil==1.5
 django
 docutils
 pil
