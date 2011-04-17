@@ -4,6 +4,6 @@
 *.so
 build
 db
-/localsettings.py
+localsettings.py
 media/cache
 media/uploads
