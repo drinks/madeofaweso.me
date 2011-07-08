@@ -1,6 +1,6 @@
 from BeautifulSoup import BeautifulSoup
 from dateutil import parser
-from moa.lifestream.models import SocialNetwork, BehanceAccount, BehanceField, BehanceImage, BehanceItem
+from lifestream.models import SocialNetwork, BehanceAccount, BehanceField, BehanceImage, BehanceItem
 
 import urllib2
 import datetime

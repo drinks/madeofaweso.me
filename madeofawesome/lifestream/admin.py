@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.db import models
 
-from moa.lifestream import models
+from lifestream import models
 
 class SocialNetworkAdmin(admin.ModelAdmin):
     pass

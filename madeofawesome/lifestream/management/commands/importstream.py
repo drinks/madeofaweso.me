@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if 'behance' in args:
-            from moa.lifestream.importers.behance import BehanceImporter
+            from lifestream.importers.behance import BehanceImporter
             if 'pages' in options:
                 pages = options['pages']
             else:
